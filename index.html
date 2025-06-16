@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Mi Mejor Amiga 💕</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #fff5f7;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      cursor: pointer;
+    }
+    
+    #message {
+      position: absolute;
+      color: #d53f8c;
+      font-size: 3em;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(213, 63, 140, 0.3);
+      z-index: 10;
+      animation: pulse 1s infinite alternate;
+      user-select: none;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      border: 3px dotted #f687b3;
+      max-width: 80%;
+      box-shadow: 0 0 15px rgba(246, 135, 179, 0.3);
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+    
+    .falling-text {
+      position: absolute;
+      font-size: 20px;
+      color: #d53f8c;
+      z-index: 2;
+      pointer-events: none;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+      animation: fall linear forwards;
+      font-weight: bold;
+      user-select: none;
+    }
+    
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+    
+    .heart-effect {
+      position: absolute;
+      font-size: 30px;
+      z-index: 5;
+      animation: float 1.5s ease-out forwards;
+      pointer-events: none;
+      user-select: none;
+      color: white !important;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+      }
+    }
+    
+    .snoopy {
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+      width: 120px;
+      height: 120px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: float-snoopy 15s linear infinite;
+      opacity: 0.9;
+      image-rendering: crisp-edges;
+    }
+    
+    @keyframes float-snoopy {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(50px, 50px) rotate(5deg);
+      }
+      50% {
+        transform: translate(100px, 0) rotate(0deg);
+      }
+      75% {
+        transform: translate(50px, -50px) rotate(-5deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+    }
+    
+    #music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background-color: rgba(214, 65, 143, 0.7);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    #music-control i {
+      color: white;
+      font-size: 24px;
+    }
+    
+    #music-info {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 100;
+      color: #d53f8c;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 5px 10px;
+      border-radius: 15px;
+      display: none;
+    }
+    
+    @media (max-width: 600px) {
+      #message {
+        font-size: 2em;
+      }
+      
+      .snoopy {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .falling-text {
+        font-size: 16px;
+      }
+      
+      #music-control {
+        width: 40px;
+        height: 40px;
+        bottom: 10px;
+        right: 10px;
+      }
+      
+      #music-control i {
+        font-size: 20px;
+      }
+      
+      #music-info {
+        font-size: 12px;
+        bottom: 10px;
+        left: 10px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div id="message">Snoopy te ama, amiga 💝</div>
+  
+  <div id="music-control" title="Haz clic para reproducir música">
+    <i class="fas fa-music"></i>
+  </div>
+  
+  <div id="music-info"></div>
+  
+  <audio id="background-music" loop>
+    <source src="linda_muchachita.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const message = document.getElementById('message');
+    const colors = ['#d53f8c', '#f687b3', '#fbb6ce', '#fed7e2', '#e53e3e', '#dd6b20', '#f6ad55'];
+    let currentMessage = 0;
+    
+    const phrases = [
+      "Snoopy te ama, mejor amiga 💖",
+      "Eres mi Woodstock favorito 🐦",
+      "Snoopy baila por nuestra amistad 💃",
+      "Juntas somos como Snoopy y Charlie Brown 👯‍♀️",
+      "Tu amistad es mi hueso de la suerte 🍀",
+      "Eres tan especial como Snoopy en su casita 🏡",
+      "Woodstock aprueba nuestra amistad 🎯",
+      "Snoopy nos sonríe desde las nubes ☁️",
+      "Nuestra amistad es mágica como los sueños de Snoopy ✨",
+      "Eres mi cómplice como Sally con Linus 🧶",
+      "Snoopy nos envía abrazos de algodón de azúcar 🤗",
+      "Tu sonrisa alegra mis días grises ☀️",
+      "Eres el mejor regalo, mejor que una manta de Linus 🎁",
+      "Snoopy nos protege desde su Sopwith Camel ✈️",
+      "Nuestros secretos son más guardados que los de Marcie 🤫",
+      "Eres mi estrella como la estrella de Lucy 🌟",
+      "Snoopy baila cada vez que te veo 🕺",
+      "Eres mi rayo de sol en días de lluvia ⛅",
+      "Snoopy nos une con su ternura canina 🐾",
+      "Tu amistad es mi tesoro más preciado 💎",
+      "Snoopy nos manda besitos de chocolate 💋",
+      "Eres mi compañera de aventuras como Peppermint Patty ⚾",
+      "Snoopy celebra nuestro lazo especial 🎀",
+      "Tus detalles son perfectos como un día de picnic 🧺",
+      "Snoopy quiere ser tu amigo para siempre 🐕",
+      "Eres mi dosis de alegría diaria 💊",
+      "Snoopy te envía flores desde su jardín secreto 🌸",
+      "Nuestra conexión es única como Snoopy y su máquina de escribir ⌨️",
+      "Snoopy nos dibuja corazones en el cielo con su avión ❤️",
+      "Eres mi confidente como Linus con su manta 🗝️",
+      "Snoopy nos sonríe desde su casita con techo rojo 🏠",
+      "Tus consejos son sabios como los del psicólogo Lucy 🛋️",
+      "Snoopy aprueba nuestras noches de chicas 🎉",
+      "Eres mi refugio seguro como la manta de Linus 🧣",
+      "Snoopy nos protege con sus patas de suerte 🍀",
+      "Tus locuras me encantan más que los trucos de Lucy 🤪",
+      "Snoopy nos regala alegría con sus piruetas 🎤",
+      "Eres mi mejor aventura como volar en Sopwith Camel ✈️",
+      "Snoopy celebra tu corazón de oro con un aullido de amor 🎶",
+      "Nuestra amistad es eterna como los Peanuts ♾️"
+    ];
+    
+    const snoopyGifs = [
+      'https://i.pinimg.com/originals/b2/c8/5b/b2c85bda67c05e092c5c0d53aeda26f7.gif',
+      'https://i.pinimg.com/originals/38/3f/e8/383fe8c964d1aed7d9b5f12b4ed553e2.gif',
+      'https://i.pinimg.com/originals/4e/c0/73/4ec0737ce90ebb69f4f0132df3c708db.gif',
+      'https://i.pinimg.com/originals/cd/c1/31/cdc131bd280551132d41924e86973599.gif',
+      'https://www.icegif.com/wp-content/uploads/snoopy-valentine-icegif-12.gif',
+      'https://www.icegif.com/wp-content/uploads/icegif-218.gif',
+      'https://media.tenor.com/qO8LJB0jccwAAAAj/snoopy-magic.gif',
+      'https://img1.picmix.com/output/stamp/normal/6/4/8/0/1560846_7d540.gif',
+      'https://media.tenor.com/3tZ9nK4xQHAAAAAC/snoopy-kiss.gif',
+      'https://i.gifer.com/BARh.gif',
+    ];
+
+    const musicControl = document.getElementById('music-control');
+    const musicInfo = document.getElementById('music-info');
+    const backgroundMusic = document.getElementById('background-music');
+    let isMusicPlaying = false;
+    let audioEnabled = false;
+
+    function showMusicInfo(text, duration = 3000) {
+      musicInfo.textContent = text;
+      musicInfo.style.display = 'block';
+      if (duration > 0) {
+        setTimeout(() => {
+          musicInfo.style.display = 'none';
+        }, duration);
+      }
+    }
+
+    function createHearts(event) {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-effect';
+        heart.innerHTML = '❤️';
+        heart.style.left = `${event.clientX - 15 + (Math.random() * 100 - 50)}px`;
+        heart.style.top = `${event.clientY - 15 + (Math.random() * 100 - 50)}px`;
+        heart.style.fontSize = `${Math.random() * 25 + 20}px`;
+        heart.style.animationDuration = `${Math.random() * 1 + 1.5}s`;
+        heart.style.opacity = `${Math.random() * 0.5 + 0.5}`;
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.remove();
+        }, 1500);
+      }
+    }
+
+    document.body.addEventListener('click', function(event) {
+      if (!audioEnabled) {
+        audioEnabled = true;
+        backgroundMusic.volume = 0.7;
+        showMusicInfo("Audio habilitado", 1500);
+      }
+      
+      if (!event.target.closest('#music-control')) {
+        createHearts(event);
+        currentMessage = (currentMessage + 1) % phrases.length;
+        message.textContent = phrases[currentMessage];
+      }
+    });
+
+    musicControl.addEventListener('click', function() {
+      if (!audioEnabled) {
+        showMusicInfo("Primero haz clic en la página", 2000);
+        return;
+      }
+      
+      if (isMusicPlaying) {
+        backgroundMusic.pause();
+        musicControl.innerHTML = '<i class="fas fa-music"></i>';
+        musicControl.title = "Reproducir música";
+        showMusicInfo("Música pausada", 2000);
+      } else {
+        backgroundMusic.currentTime = 0;
+        backgroundMusic.play()
+          .then(() => {
+            musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            musicControl.title = "Pausar música";
+            showMusicInfo("Reproduciendo: Linda Muchachita");
+            isMusicPlaying = true;
+          })
+          .catch(error => {
+            console.error("Error al reproducir:", error);
+            showMusicInfo("Error al reproducir", 3000);
+          });
+      }
+      isMusicPlaying = !isMusicPlaying;
+    });
+
+    function createSnoopies() {
+      for (let i = 0; i < 10; i++) {
+        const snoopy = document.createElement('div');
+        snoopy.className = 'snoopy';
+        snoopy.style.backgroundImage = `url('${snoopyGifs[i % snoopyGifs.length]}')`;
+        snoopy.style.left = `${Math.random() * 85 + 5}%`;
+        snoopy.style.top = `${Math.random() * 85 + 5}%`;
+        snoopy.style.animationDuration = `${Math.random() * 15 + 10}s`;
+        snoopy.style.animationDelay = `${Math.random() * 8}s`;
+        snoopy.style.transform = `scale(${Math.random() * 0.5 + 0.8})`;
+        document.body.appendChild(snoopy);
+      }
+    }
+    
+    function createFallingText() {
+      const textElement = document.createElement('div');
+      textElement.className = 'falling-text';
+      textElement.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+      textElement.style.color = colors[Math.floor(Math.random() * colors.length)];
+      
+      const leftPos = Math.random() * (window.innerWidth - 200) + 100;
+      textElement.style.left = `${leftPos}px`;
+      textElement.style.top = '-50px';
+      
+      const duration = Math.random() * 3 + 2;
+      textElement.style.animationDuration = `${duration}s`;
+      
+      document.body.appendChild(textElement);
+      
+      setTimeout(() => {
+        textElement.remove();
+      }, duration * 1000);
+    }
+
+    document.addEventListener('selectstart', (e) => {
+      e.preventDefault();
+    });
+
+    createSnoopies();
+    setInterval(createFallingText, 250);
+    for (let i = 0; i < 15; i++) {
+      setTimeout(createFallingText, i * 300);
+    }
+  </script>
+</body>
+</html>
